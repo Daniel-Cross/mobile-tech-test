@@ -3,15 +3,15 @@ import {
   Dimensions,
   Image,
   ScrollView,
-  Text,
   TouchableOpacity,
   View,
 } from "react-native";
 import { HttpRequest } from "../constants/Network";
-import { Container } from "../constants/Styles";
+import { Body, Container, Title } from "../constants/Styles";
 import { Ionicons } from "@expo/vector-icons";
 
 const { width, height } = Dimensions.get("screen");
+const TOP_HEADER_HEIGHT = height * 0.3;
 
 const MealScreen = ({ route, navigation }) => {
   const { id } = route.params;
@@ -31,35 +31,45 @@ const MealScreen = ({ route, navigation }) => {
 
   return (
     <Container>
+      <TouchableOpacity
+        onPress={() => navigation.goBack()}
+        style={{
+          height: 44,
+          width: 44,
+          position: "absolute",
+          top: 55,
+          left: 25,
+          zIndex: 2,
+        }}
+      >
+        <Ionicons name="arrow-back-outline" size={30} />
+      </TouchableOpacity>
       <ScrollView showsVerticalScrollIndicator={false} bounces={false}>
-        <TouchableOpacity
-          onPress={() => navigation.goBack()}
-          style={{
-            height: 44,
-            width: 44,
-            position: "absolute",
-            top: 15,
-            left: 25,
-            zIndex: 2,
-          }}
-        >
-          <Ionicons name="arrow-back-outline" size={30} />
-        </TouchableOpacity>
         <Image
           source={{ uri: mealData.picture }}
-          style={{ height: height * 0.3, width }}
+          style={{ width, height: TOP_HEADER_HEIGHT + 32 }}
         />
-        <Text style={{ fontSize: 20, fontWeight: "700", padding: 12 }}>
-          {mealData.title}
-        </Text>
-        <Text style={{ padding: 12, fontSize: 16 }}>
-          {mealData.description}
-        </Text>
-        <View style={{ padding: 12 }}>
-          <Text style={{ fontSize: 16, fontWeight: "700", marginBottom: 12 }}>
-            Ingredients
-          </Text>
-          <Text style={{ fontSize: 15 }}>{mealData.ingredients}</Text>
+        <View
+          style={{
+            position: "absolute",
+            width,
+            height,
+            backgroundColor: "white",
+            transform: [
+              {
+                translateY: TOP_HEADER_HEIGHT,
+              },
+            ],
+            borderRadius: 32,
+            padding: 12,
+          }}
+        >
+          <Title>{mealData.title}</Title>
+          <Body>{mealData.description}</Body>
+
+          <Title fontSize={18}>Ingredients</Title>
+
+          <Body>{mealData.ingredients}</Body>
         </View>
       </ScrollView>
     </Container>
